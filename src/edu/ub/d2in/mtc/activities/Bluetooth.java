@@ -1,4 +1,4 @@
-package com.example.tut1;
+package edu.ub.d2in.mtc.activities;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,6 +6,10 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
+
+import edu.ub.d2in.mtc.R;
+import edu.ub.d2in.mtc.R.id;
+import edu.ub.d2in.mtc.R.layout;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;

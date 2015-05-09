@@ -1,9 +1,7 @@
-package com.example.tut1;
+package edu.ub.d2in.mtc.activities;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothSocket;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -11,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -27,7 +24,11 @@ import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.GraphViewSeries.GraphViewSeriesStyle;
 import com.jjoe64.graphview.LineGraphView;
 
-public class MainActivity extends Activity implements View.OnClickListener{
+import edu.ub.d2in.mtc.R;
+import edu.ub.d2in.mtc.R.id;
+import edu.ub.d2in.mtc.R.layout;
+
+public class GraphActivity extends Activity implements View.OnClickListener{
 
 	@Override
 	public void onBackPressed() {
@@ -120,7 +121,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 		requestWindowFeature(Window.FEATURE_NO_TITLE);//Hide title
 		this.getWindow().setFlags(WindowManager.LayoutParams.
 				FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);//Hide Status bar
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_graph);
 		//set background color
 		LinearLayout background = (LinearLayout)findViewById(R.id.bg);
 		background.setBackgroundColor(Color.BLACK);
