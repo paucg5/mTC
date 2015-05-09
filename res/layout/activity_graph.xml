@@ -5,10 +5,12 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true"
     android:orientation="horizontal"
-    android:weightSum="100" >
+    android:weightSum="100"
+    android:background="@color/white" >
 
     <LinearLayout
         android:id="@+id/Graph"
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:layout_weight="15" />

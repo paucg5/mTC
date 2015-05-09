@@ -25,16 +25,14 @@ import com.jjoe64.graphview.GraphViewSeries.GraphViewSeriesStyle;
 import com.jjoe64.graphview.LineGraphView;
 
 import edu.ub.d2in.mtc.R;
-import edu.ub.d2in.mtc.R.id;
-import edu.ub.d2in.mtc.R.layout;
 
 public class GraphActivity extends Activity implements View.OnClickListener{
 
 	@Override
 	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		if (Bluetooth.connectedThread != null) {
-			Bluetooth.connectedThread.write("Q");}//Stop streaming
+		if (BluetoothActivity.connectedThread != null) {
+			BluetoothActivity.connectedThread.write("Q");
+		}//Stop streaming
 		super.onBackPressed();
 	}
 
@@ -42,19 +40,22 @@ public class GraphActivity extends Activity implements View.OnClickListener{
 	static boolean Lock;//whether lock the x-axis to 0-5
 	static boolean AutoScrollX;//auto scroll to the last x value
 	static boolean Stream;//Start or stop streaming
+	
 	//Button init
 	Button bXminus;
 	Button bXplus;
 	ToggleButton tbLock;
 	ToggleButton tbScroll;
 	ToggleButton tbStream;
+	
 	//GraphView init
-	static LinearLayout GraphView;
+	static LinearLayout graphViewLayout;
 	static GraphView graphView;
-	static GraphViewSeries Series;
+	static GraphViewSeries graphSeries;
+	
 	//graph value
 	private static double graph2LastXValue = 0;
-	private static int Xview=10;
+	private static int Xview = 10;
 	Button bConnect, bDisconnect;
 
 	Handler mHandler = new Handler(){
@@ -63,13 +64,13 @@ public class GraphActivity extends Activity implements View.OnClickListener{
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			switch(msg.what){
-			case Bluetooth.SUCCESS_CONNECT:
-				Bluetooth.connectedThread = new Bluetooth.ConnectedThread((BluetoothSocket)msg.obj);
+			case BluetoothActivity.SUCCESS_CONNECT:
+				BluetoothActivity.connectedThread = new BluetoothActivity.ConnectedThread((BluetoothSocket)msg.obj);
 				Toast.makeText(getApplicationContext(), "Connected!", 0).show();
 				String s = "successfully connected";
-				Bluetooth.connectedThread.start();
+				BluetoothActivity.connectedThread.start();
 				break;
-			case Bluetooth.MESSAGE_READ:
+			case BluetoothActivity.MESSAGE_READ:
 
 				byte[] readBuf = (byte[]) msg.obj;
 				String strIncom = new String(readBuf, 0, 5);                 // create string from bytes array
@@ -78,11 +79,11 @@ public class GraphActivity extends Activity implements View.OnClickListener{
 				if (strIncom.indexOf('.')==2 && strIncom.indexOf('s')==0){
 					strIncom = strIncom.replace("s", "");
 					if (isFloatNumber(strIncom)){
-						Series.appendData(new GraphViewData(graph2LastXValue,Double.parseDouble(strIncom)),AutoScrollX);
+						graphSeries.appendData(new GraphViewData(graph2LastXValue,Double.parseDouble(strIncom)),AutoScrollX);
 
 						//X-axis control
 						if (graph2LastXValue >= Xview && Lock == true){
-							Series.resetData(new GraphViewData[] {});
+							graphSeries.resetData(new GraphViewData[] {});
 							graph2LastXValue = 0;
 						}else graph2LastXValue += 0.1;
 
@@ -92,8 +93,8 @@ public class GraphActivity extends Activity implements View.OnClickListener{
 							graphView.setViewPort(graph2LastXValue-Xview, Xview);
 
 						//refresh
-						GraphView.removeView(graphView);
-						GraphView.addView(graphView);
+						graphViewLayout.removeView(graphView);
+						graphViewLayout.addView(graphView);
 
 					}
 				}
@@ -122,35 +123,32 @@ public class GraphActivity extends Activity implements View.OnClickListener{
 		this.getWindow().setFlags(WindowManager.LayoutParams.
 				FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);//Hide Status bar
 		setContentView(R.layout.activity_graph);
-		//set background color
-		LinearLayout background = (LinearLayout)findViewById(R.id.bg);
-		background.setBackgroundColor(Color.BLACK);
+		
 		init();
 		ButtonInit();
 	}
 
 	void init(){
-		Bluetooth.gethandler(mHandler);
+		BluetoothActivity.setHandler(mHandler);
 
 		//init graphview
-		GraphView = (LinearLayout) findViewById(R.id.Graph);
-		// init example series data------------------- 
-		Series = new GraphViewSeries("Signal", 
-				new GraphViewSeriesStyle(Color.YELLOW, 2),//color and thickness of the line 
+		graphViewLayout = (LinearLayout) findViewById(R.id.Graph);
+		
+		// init example series data
+		graphSeries = new GraphViewSeries("Analog input",
+				new GraphViewSeriesStyle(Color.BLUE, 2),//color and thickness of the line 
 				new GraphViewData[] {new GraphViewData(0, 0)});
-		graphView = new LineGraphView(  
-				this // context  
-				, "Graph" // heading  
-				);  		
+		graphView = new LineGraphView(this, "");
 		graphView.setViewPort(0, Xview);
 		graphView.setScrollable(true);
-		graphView.setScalable(true);	
-		graphView.setShowLegend(true); 
+		graphView.setScalable(true);
 		graphView.setLegendAlign(LegendAlign.BOTTOM);
 		graphView.setManualYAxis(true);
 		graphView.setManualYAxisBounds(5, 0);
-		graphView.addSeries(Series); // data   
-		GraphView.addView(graphView);  
+		
+		graphView.addSeries(graphSeries); // data
+		
+		graphViewLayout.addView(graphView);  
 	}
 
 	void ButtonInit(){
@@ -181,10 +179,10 @@ public class GraphActivity extends Activity implements View.OnClickListener{
 		// TODO Auto-generated method stub
 		switch(v.getId()){
 		case R.id.bConnect:
-			startActivity(new Intent("android.intent.action.BT1"));
+			startActivity(new Intent(this, BluetoothActivity.class));
 			break;
 		case R.id.bDisconnect:
-			Bluetooth.disconnect();
+			BluetoothActivity.disconnect();
 			break;
 		case R.id.bXminus:
 			if (Xview>1) Xview--;
@@ -208,11 +206,11 @@ public class GraphActivity extends Activity implements View.OnClickListener{
 			break;
 		case R.id.tbStream:
 			if (tbStream.isChecked()){
-				if (Bluetooth.connectedThread != null)
-					Bluetooth.connectedThread.write("E");
+				if (BluetoothActivity.connectedThread != null)
+					BluetoothActivity.connectedThread.write("E");
 			}else{
-				if (Bluetooth.connectedThread != null)
-					Bluetooth.connectedThread.write("Q");
+				if (BluetoothActivity.connectedThread != null)
+					BluetoothActivity.connectedThread.write("Q");
 			}
 			break;
 		}

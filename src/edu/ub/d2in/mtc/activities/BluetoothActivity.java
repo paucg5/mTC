@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
-import edu.ub.d2in.mtc.R;
-import edu.ub.d2in.mtc.R.id;
-import edu.ub.d2in.mtc.R.layout;
-
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -28,8 +24,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import edu.ub.d2in.mtc.R;
 
-public class Bluetooth extends Activity implements OnItemClickListener{
+public class BluetoothActivity extends Activity implements OnItemClickListener{
 
 	public static void disconnect(){
 		if (connectedThread != null) {
@@ -38,13 +35,16 @@ public class Bluetooth extends Activity implements OnItemClickListener{
 		}
 	}
 
-	public static void gethandler(Handler handler){//Bluetooth handler
+	public static void setHandler(Handler handler){
+		//Bluetooth handler
 		mHandler = handler;
 	}
 	static Handler mHandler = new Handler();
 
 	static ConnectedThread connectedThread;
+	
 	public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+	
 	protected static final int SUCCESS_CONNECT = 0;
 	protected static final int MESSAGE_READ = 1;
 	ArrayAdapter<String> listAdapter;
