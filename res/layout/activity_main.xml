@@ -1,33 +1,23 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white" >
-	
-    <ImageView
-        android:id="@+id/imageview_UBLogo"
+    android:layout_height="match_parent">
+    
+    <!-- The main content view -->
+    <FrameLayout
+        android:id="@+id/content_frame"
         android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:scaleType="fitCenter"
-        android:padding="10dp"
-        android:src="@drawable/ic_ub_logo" />
+        android:layout_height="match_parent" />
     
-    <ImageView
-        android:id="@+id/imageview_D2INLogo"
-        android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/imageview_UBLogo"
-        android:src="@drawable/ic_logo_d2in" />
+    <!-- The navigation drawer -->
+    <ListView android:id="@+id/nav_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="#DDDDDD"/>
     
-    <Button
-        android:id="@+id/button_show_bt_devices"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/imageview_D2INLogo"
-        android:layout_marginTop="30dp"
-        android:text="@string/button_bt_devices" />
-
-</RelativeLayout>
+</android.support.v4.widget.DrawerLayout>
