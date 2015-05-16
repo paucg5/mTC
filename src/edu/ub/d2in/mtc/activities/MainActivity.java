@@ -26,6 +26,7 @@ import app.akexorcist.bluetotohspp.library.DeviceList;
 import edu.ub.d2in.mtc.R;
 import edu.ub.d2in.mtc.bluetooth.BTMessageBus;
 import edu.ub.d2in.mtc.fragments.AboutFragment;
+import edu.ub.d2in.mtc.fragments.ChartFragment;
 import edu.ub.d2in.mtc.fragments.LogFragment;
 import edu.ub.d2in.mtc.fragments.dialogs.OkDialogFragment;
 import edu.ub.d2in.mtc.fragments.dialogs.OkDialogFragment.OkDialogListener;
@@ -203,11 +204,18 @@ public class MainActivity extends ActionBarActivity implements OkDialogListener 
 			startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
 			drawerLayout.closeDrawer(drawerList);
 			break;
+		case 1:
+			//chart
+			fragment = new ChartFragment();
+			setContentFragment(fragment, position);
+			break;
 		case 2:
+			//log
 			fragment = new LogFragment();
 			setContentFragment(fragment, position);
 			break;
 		default:
+			//about
 			fragment = new AboutFragment();
 			setContentFragment(fragment, position);
 			break;
