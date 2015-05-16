@@ -10,5 +10,9 @@
     <string name="drawer_close">@string/app_name</string>
     <string name="dialog_no_bt_title">Enable Bluetooth</string>
     <string name="dialog_no_bt_content">Please enable your Bluetooth connection to use this app.</string>
+    <string name="name">Pau Cosialls Guillen</string>
+    <string name="bachelor">Bachelor\'s Thesis</string>
+    <string name="degree">Degree in Biomedical Engineering</string>
+    <string name="year">2015</string>
     
 </resources>
