@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothSPP.BluetoothConnectionListener;
 import app.akexorcist.bluetotohspp.library.BluetoothSPP.BluetoothStateListener;
@@ -35,6 +36,10 @@ public class MainActivity extends ActionBarActivity implements OkDialogListener 
 
 	private static final String TAG = MainActivity.class.getSimpleName();
 	private static final String DIALOG_NO_BT_ENABLED = "no_bt_enabled";
+	
+	private static final int FRAG_DEVICES = 0;
+	private static final int FRAG_CHART = 1;
+	private static final int FRAG_LOG = 2;
 	
 	private String [] navigationItems;
 	private DrawerLayout drawerLayout;
@@ -74,7 +79,6 @@ public class MainActivity extends ActionBarActivity implements OkDialogListener 
 		
 		bluetooth = new BluetoothSPP(this);
 		//check for bluetooth
-		//TODO user feedback
 		if (bluetooth.isBluetoothAvailable()) {
 			if (bluetooth.isBluetoothEnabled()) {
 				Log.d(TAG, "BT available and enabled");
@@ -136,7 +140,8 @@ public class MainActivity extends ActionBarActivity implements OkDialogListener 
 		bluetooth.setBluetoothConnectionListener(new BluetoothConnectionListener() {
 			@Override
 			public void onDeviceConnected(String name, String address) {
-		        // Do something when successfully connected
+				setFragment(FRAG_CHART);
+				Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
 		    }
 
 			@Override
@@ -195,27 +200,22 @@ public class MainActivity extends ActionBarActivity implements OkDialogListener 
 	}
 	
 	private void setFragment(int position) {
-		//TODO switch on position
 		Fragment fragment;
 	    switch (position) {
-		case 0:
-			//devices
+		case FRAG_DEVICES:
 			Intent intent = new Intent(this, DeviceList.class);
 			startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
 			drawerLayout.closeDrawer(drawerList);
 			break;
-		case 1:
-			//chart
+		case FRAG_CHART:
 			fragment = new ChartFragment();
 			setContentFragment(fragment, position);
 			break;
-		case 2:
-			//log
+		case FRAG_LOG:
 			fragment = new LogFragment();
 			setContentFragment(fragment, position);
 			break;
 		default:
-			//about
 			fragment = new AboutFragment();
 			setContentFragment(fragment, position);
 			break;

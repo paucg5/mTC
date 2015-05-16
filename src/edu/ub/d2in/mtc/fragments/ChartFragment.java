@@ -87,7 +87,7 @@ public class ChartFragment extends Fragment implements BTDataListener {
 		
 		graph.getViewport().setXAxisBoundsManual(true);
 		graph.getViewport().setMaxX(500.0);
-		graph.getViewport().setMinX(0.0);
+		graph.getViewport().setMinX(Double.MIN_NORMAL);
 	}
 	
 	private void setupDataSeries(GraphView graph) {
